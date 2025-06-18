@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Página A</title>
+</head>
+<body>
+  <h1>Página A</h1>
+  <input id="mensaje" placeholder="Escribe un mensaje..." />
+  <button onclick="enviarMensaje()">Enviar</button>
+  <div id="chat"></div>
+
+  <script>
+    const socket = new WebSocket('ws://localhost:8080');
+
+    socket.onmessage = (event) => {
+      const div = document.getElementById('chat');
+      div.innerHTML += `<p><b>Página B:</b> ${event.data}</p>`;
+    };
+
+    function enviarMensaje() {
+      const input = document.getElementById('mensaje');
+      socket.send(input.value);
+      const div = document.getElementById('chat');
+      div.innerHTML += `<p><b>Yo:</b> ${input.value}</p>`;
+      input.value = '';
+    }
+  </script>
+</body>
+</html>
